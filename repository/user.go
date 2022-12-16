@@ -35,8 +35,8 @@ func (repo *userRepository) FindById(id int) (*models.User, error) {
 
 	data := &models.User{}
 
+	//result := repo.db.Clauses(dbresolver.Use("read")).Find(data, "id = ?", id)
 	result := repo.db.Find(data, "id = ?", id)
-
 	if result.RowsAffected < 1 {
 		return nil, errors.New("not found user")
 	}

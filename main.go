@@ -5,6 +5,7 @@ import (
 
 	"github.com/beomdevops/go-restapi/controller"
 	"github.com/beomdevops/go-restapi/database"
+	"github.com/beomdevops/go-restapi/models"
 	"github.com/beomdevops/go-restapi/repository"
 	"github.com/beomdevops/go-restapi/service"
 	fiber "github.com/gofiber/fiber/v2"
@@ -19,7 +20,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	posgresDb.PostgresDB.AutoMigrate(&models.User{})
 	userRepo := repository.NewUserRepository(posgresDb.PostgresDB)
 	userSvc := service.NewUserService(userRepo)
 	userController := controller.NewUserController(userSvc)
@@ -29,7 +30,7 @@ func main() {
 	})
 
 	app.Get("/users/:userName", func(c *fiber.Ctx) error {
-		return userController.FindUserById(c)
+		return userController.FindUserByName(c)
 	})
 	app.Post("/users", func(c *fiber.Ctx) error {
 		return userController.CreateUser(c)
