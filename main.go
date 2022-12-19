@@ -33,13 +33,23 @@ func main() {
 		if err != nil {
 			return c.Status(500).JSON(fiber.Map{"status": "error", "message": err, "data": nil})
 		}
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "sucess", "data": data})
+		return c.Status(200).JSON(fiber.Map{"status": "sucess", "message": "sucess", "data": data})
 	})
 	app.Get("/users/:userName", func(c *fiber.Ctx) error {
 		return userController.FindUserByName(c)
 	})
 	app.Post("/users", func(c *fiber.Ctx) error {
 		return userController.CreateUser(c)
+	})
+
+	app.Get("/jwt", func(c *fiber.Ctx) error {
+		jwt := service.GenJwt()
+		return c.Status(200).JSON(fiber.Map{"status": "sucess", "message": "sucess", "jwt": jwt})
+	})
+
+	app.Get("/jwk", func(c *fiber.Ctx) error {
+		n, e := service.GenJwk()
+		return c.Status(200).JSON(fiber.Map{"status": "sucess", "message": "sucess", "n": n, "e": e})
 	})
 	log.Fatal(app.Listen(":3000"))
 

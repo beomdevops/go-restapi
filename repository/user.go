@@ -23,9 +23,9 @@ type userRepository struct {
 }
 
 func (repo *userRepository) FindUsers() ([]*models.User, error) {
-	user := make([]*models.User, 0)
+	user := &[]*models.User{}
 	repo.db.Find(user)
-	return user, nil
+	return *user, nil
 }
 func (repo *userRepository) CreateUser(u *models.User) (*models.User, error) {
 

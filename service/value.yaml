@@ -1,0 +1,28 @@
+apiVersion: "security.istio.io/v1beta1"
+kind: "RequestAuthentication"
+metadata:
+  name: "go-jwt"
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: orderservice
+  jwtRules:
+  - issuer: "ISSUER"
+    jwks: |
+      {"keys":[{"e":"AQAB","kty":"RSA","n":"3o95D41oxnaD_KfuFpt5LgMPbeqXsvQfoEH1Na_zUgdJhBQwlFhvvz9PySeXqz0I1ReN912pT8n_yE9sOPzG20ZfKXhLv6lQ6IQFU7xWg4ESsZ27UNGmD9IwG7nx0Dz0JVer3yAnNObrbgquBsJjZ0X7zBHSACdk7DctHEyzkzL3rr0lvAAGQ_xbpEumdHOMKIITkz9zREEskoEF7ljOn7CH-4NBWoI1FULAsAk487hmqK2nE3W7YdzItUkDKxIqa_s5ySclMI8MeBSCTYUKw7FKb63lx-tMxbMVRNcovpjL-1RBOZsm90_4qKhl9LZinzsTlXku0tMJFdDusWknSQ"}]}
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: go-auth-policy
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: orderservice
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["*"]
