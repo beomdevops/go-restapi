@@ -11,6 +11,7 @@ type UserRepository interface {
 	FindById(id int) (*models.User, error)
 	FindByName(name string) (*models.User, error)
 	CreateUser(u *models.User) (*models.User, error)
+	FindUsers() ([]*models.User, error)
 }
 
 func NewUserRepository(cdb *gorm.DB) UserRepository {
@@ -21,6 +22,11 @@ type userRepository struct {
 	db *gorm.DB
 }
 
+func (repo *userRepository) FindUsers() ([]*models.User, error) {
+	user := make([]*models.User, 0)
+	repo.db.Find(user)
+	return user, nil
+}
 func (repo *userRepository) CreateUser(u *models.User) (*models.User, error) {
 
 	result := repo.db.Create(u)

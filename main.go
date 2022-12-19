@@ -28,7 +28,13 @@ func main() {
 	app.Get("/users/:userId", func(c *fiber.Ctx) error {
 		return userController.FindUserById(c)
 	})
-
+	app.Get("users", func(c *fiber.Ctx) error {
+		data, err := userRepo.FindUsers()
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{"status": "error", "message": err, "data": nil})
+		}
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "sucess", "data": data})
+	})
 	app.Get("/users/:userName", func(c *fiber.Ctx) error {
 		return userController.FindUserByName(c)
 	})
